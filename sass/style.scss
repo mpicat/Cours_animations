@@ -1,0 +1,257 @@
+* {
+    box-sizing: border-box;
+    font-size: 100%;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: rgb(237, 246, 247);
+}
+
+.container {
+    margin: 30px;
+}
+
+$color-btn: black;
+$color-txt-btn: green;
+$color-danger: #b20a37;
+$color-btn-start: rgba(1, 28, 55, 0);
+$color-btn-end: rgba(1, 28, 55, 1);
+// favoriser les animations transform et opacity qui impactent peu la fluidité du site
+
+// animation grandissement 15%
+.container__btn {
+    background: $color-btn;
+    color: $color-txt-btn;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 1rem 1.5rem;
+    border-radius: 10rem;
+    transform: scale(1);
+    transition: transform 200ms;
+    &:hover {
+        transform: scale(1.15);
+    }
+}
+
+// signal que la commande est invalide lorsqu'on se retire du focus
+.form {
+    &__group {
+        display: flex;
+        flex-direction: column;
+        outline: none;
+        & label {
+            color: rgb(21, 21, 138);
+            font-weight: bold;
+        }
+        & input {
+            border: none;
+            border-radius: 10rem;
+            padding: 0.5rem;
+            transition: background-color 500ms;
+            &:focus {
+                border: 2px solid #6300a0;
+                outline: none;
+            }
+            &:not(:focus):invalid {
+                background: $color-danger;
+                border: 2px solid $color-danger;
+                color: white;
+            }
+        }
+    }
+}
+
+// combiner plusieurs propriétés, si l'on veut modifier toutes les roriétés au même rythme : transition: all "X"ms;
+.container__btn-modificated {
+    background: $color-btn-start;
+    color: $color-txt-btn;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 1rem 1.5rem;
+    border-radius: 10rem;
+    transform: scale(1);
+    transition: transform 600ms, background-color 400ms 200ms;
+    // la 2ème valeur à 200ms est un temps de délai avant le démarrage de l'animation background-color
+    &:hover {
+        transform: scale(1.15);
+        background-color: $color-btn-end;
+    }
+}
+
+// timing fonction : ease (par défaut ease-in léger et ease-out plus marqué) linear (linéaire) ease-in (accélération au début)
+// ease-out (décélération à la fin) ease-in-out (les 2) cubic-bezier(valeur 1 valeur 2 valeur 3 valeur 4) (personalisé)
+.rail {
+    border: solid 1px black;
+    width: 100%;
+    height: 50px;
+    &__wagon {
+        width: 50px;
+        height: 100%;
+        background-color: red;
+        transform: translate(0, 0);
+        transition: transform 1000ms cubic-bezier(.42, 0, .58, 1);
+        &:hover {
+            transform: translate(300px, 0);
+        }
+    }
+}
+
+// rotation
+.tourne {
+    width: 50px;
+    height: 50px;
+    background-color: blue;
+    margin: 35px;
+    transform: rotate(0deg);
+    transition: transform 1000ms ease-in-out, background-color 200ms;
+    &:hover {
+        transform: rotate(360deg);
+        background-color: yellow;
+    }
+}
+
+
+// combiner plusieurs transform
+.ball {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: green;
+    transform: translate(0, 0) scale(1, 1);
+    transition: transform 1000ms ease-in-out;
+    &:hover {
+        transform: translate(400px, 0) scale(1.2, 0.8);
+    }
+}
+
+// animer à distance
+.btn2 {
+    margin-top: 35px;
+    padding: 5px;
+    border: solid 1px black;
+    display: inline-block;
+    &:hover + .bullet{
+        transform: translate(350px, 0);
+    }
+}
+
+.bullet {
+    width: 35px;
+    height: 10px;
+    background-color: grey;
+    margin-top: 15px;
+    border-radius: 0 50% 50% 0;
+    transform: translate(0, 0);
+    transition: transform 300ms ease-in;
+}
+
+// transform origin (déplace le centre de l'animation) 1er chiffre axe X (ou left ou right ou center)
+// 2ème chiffre axe Y (ou top ou bottom ou center)
+.btn3 {
+    background-color: rgb(92, 160, 92);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    border-radius: 15px;
+    &:active + .progress {
+        & > .progress__bar {
+            transform: scaleX(1);
+        }
+    }
+}
+
+.progress {
+    border: solid 2px black;
+    margin-top: 15px;
+    height: 35px;
+    padding: 2px;
+    &__bar {
+        background-color: rgb(92, 160, 92);
+        height: 100%;
+        width: 100%;
+        transform-origin: 0% 50%;
+        transform: scaleX(0);
+        transition: transform 2000ms ease-in-out;
+    }
+}
+
+// pseudoélément avec opacity : animation changement de couleur rapide à charger
+.btn-opacity {
+    border-radius: 2rem;
+    background-color: #15DEA5;
+    position: relative;
+    z-index: 1;
+    &:hover {
+        &::after {
+            opacity: 1;
+        }
+    }
+    &::after {
+        content: "";
+        position: absolute;
+        border-radius: 2rem;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: red;
+        opacity: 0;
+        z-index: -1;
+        transition: opacity 250ms;
+    }
+}
+
+// keyframes (l'animation peut être assignée directement à un élément pour la déclencher au chargement du navigateur
+.btn4 {
+    border: 1px black solid;
+    padding: 15px;
+    width: 150px;
+    border-radius: 15px;
+    text-align: center;
+    margin: 0 auto;
+    &:active + .progress-wrap{
+        & > .progress__barr {
+            animation: progress-barkey 2000ms 1000ms both;
+        }
+    }
+}
+// ci-dessus le mot clé both inidque que l'animation étend les valeurs de départ et de fin de l'animation au delà du temps de l'animation
+// permet d'avoir une barre de chargement qui commence à 0 et reste à 100%
+.progress-wrap {
+    border: 2px black solid;
+    width: 100%;
+    padding: 2px;
+    margin-top: 15px;
+    height: 15px;
+}
+
+.progress__barr {
+    background-color: red;
+    width: 100%;
+    height: 100%;
+    transform-origin: left;
+    transform: scaleX(0.5);
+    opacity: 0;
+}
+
+@keyframes progress-barkey {
+    0% {
+        transform: scaleX(0);
+    }
+    17% {
+        transform: scaleX(0.18);
+    }
+    24% {
+        transform: scaleX(0.4);
+    }
+    46% {
+        transform: scaleX(0.81);
+    }
+    85%,100% {
+        opacity: 1;
+    }
+    100% {
+        transform: scaleX(1);
+    }
+}
